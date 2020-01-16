@@ -1,3 +1,5 @@
+import { positiveModulo } from '../../utility/positive-modulo';
+
 export class Rotor {
   private alphabetSize: number;
 
@@ -35,13 +37,16 @@ export class Rotor {
   }
 
   encrypt(letter: string): string {
-    const index = this.alphabet.get(letter)!;
-    const encryptedLetter = this.mapping.get((index + this.position) % this.alphabetSize)!;
+    const index = positiveModulo(this.alphabet.get(letter)! + this.position, this.alphabetSize);
+    const encryptedLetter = this.mapping.get(index)!;
     return encryptedLetter;
   }
 
   encryptReverse(letter: string): string {
-    const index = (this.mappingReverse.get(letter)! - this.position) % this.alphabetSize;
+    const index = positiveModulo(
+      this.mappingReverse.get(letter)! - this.position,
+      this.alphabetSize
+    );
     const encryptedLetter = this.alphabetReverse.get(index)!;
     return encryptedLetter;
   }
