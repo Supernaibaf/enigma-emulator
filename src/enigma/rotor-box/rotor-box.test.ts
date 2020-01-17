@@ -34,10 +34,10 @@ function createRotorIII(): Rotor {
   );
 }
 
-function createReflectorA(): Reflector {
+function createReflectorB(): Reflector {
   return new Reflector(
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
-    stringToCharArray('EJMZALYXVBWFCRQUONTSPIKHGD')
+    stringToCharArray('YRUHQSLDPXNGOKMIEBFZCWVJAT	')
   );
 }
 
@@ -46,9 +46,9 @@ describe(RotorBox.name, () => {
     it('should encrypt a letter correctly with one rotor', () => {
       const rotor0 = createRotorI();
       rotor0.setPosition('J');
-      const rotorBox = new RotorBox([rotor0], createReflectorA());
+      const rotorBox = new RotorBox([rotor0], createReflectorB());
 
-      expect(rotorBox.encrypt('M')).toEqual('Z');
+      expect(rotorBox.encrypt('M')).toEqual('P');
     });
 
     it('should encrypt a letter correctly with three rotors', () => {
@@ -58,9 +58,9 @@ describe(RotorBox.name, () => {
       rotor0.setPosition('J');
       rotor1.setPosition('X');
       rotor2.setPosition('L');
-      const rotorBox = new RotorBox([rotor0, rotor1, rotor2], createReflectorA());
+      const rotorBox = new RotorBox([rotor0, rotor1, rotor2], createReflectorB());
 
-      expect(rotorBox.encrypt('P')).toEqual('K');
+      expect(rotorBox.encrypt('P')).toEqual('R');
     });
   });
 
@@ -70,7 +70,7 @@ describe(RotorBox.name, () => {
       const rotor1 = createRotorII();
       rotor0.setPosition('A');
       rotor1.setPosition('A');
-      const rotorBox = new RotorBox([rotor0, rotor1], createReflectorA());
+      const rotorBox = new RotorBox([rotor0, rotor1], createReflectorB());
 
       rotorBox.step();
 
@@ -84,7 +84,7 @@ describe(RotorBox.name, () => {
       rotor0.setPosition('Q');
       rotor1.setPosition('E');
       rotor2.setPosition('V');
-      const rotorBox = new RotorBox([rotor0, rotor1, rotor2], createReflectorA());
+      const rotorBox = new RotorBox([rotor0, rotor1, rotor2], createReflectorB());
 
       rotorBox.step();
 

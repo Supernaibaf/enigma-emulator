@@ -28,7 +28,7 @@ describe(Rotor.name, () => {
       const rotor = createRotorI();
       rotor.setPosition('V');
 
-      expect(rotor.encrypt('B')).toEqual('B');
+      expect(rotor.encrypt('B')).toEqual('G');
     });
   });
 
@@ -43,14 +43,7 @@ describe(Rotor.name, () => {
       const rotor = createRotorI();
       rotor.setPosition('V');
 
-      expect(rotor.encryptReverse('B')).toEqual('B');
-    });
-
-    it('should return correct letter if position is bigger than index of letter in reverse mapping', () => {
-      const rotor = createRotorI();
-      rotor.setPosition('J');
-
-      expect(rotor.encryptReverse('V')).toEqual('Z');
+      expect(rotor.encryptReverse('G')).toEqual('B');
     });
   });
 

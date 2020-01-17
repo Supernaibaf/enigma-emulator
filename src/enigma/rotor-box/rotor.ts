@@ -7,9 +7,9 @@ export class Rotor {
 
   private alphabetReverse: Map<number, string>;
 
-  private mapping: Map<number, string>;
+  private mapping: Map<number, number>;
 
-  private mappingReverse: Map<string, number>;
+  private mappingReverse: Map<number, number>;
 
   private turnover: number;
 
@@ -26,29 +26,34 @@ export class Rotor {
 
     this.alphabet = new Map<string, number>();
     this.alphabetReverse = new Map<number, string>();
-    this.mapping = new Map<number, string>();
-    this.mappingReverse = new Map<string, number>();
     for (let i = 0; i < alphabet.length; i++) {
       this.alphabet.set(alphabet[i], i);
       this.alphabetReverse.set(i, alphabet[i]);
-      this.mapping.set(i, mapping[i]);
-      this.mappingReverse.set(mapping[i], i);
+    }
+    this.mapping = new Map<number, number>();
+    this.mappingReverse = new Map<number, number>();
+    for (let i = 0; i < mapping.length; i++) {
+      this.mapping.set(i, this.alphabet.get(mapping[i])!);
+      this.mappingReverse.set(this.alphabet.get(mapping[i])!, i);
     }
   }
 
   encrypt(letter: string): string {
     const index = positiveModulo(this.alphabet.get(letter)! + this.position, this.alphabetSize);
-    const encryptedLetter = this.mapping.get(index)!;
-    return encryptedLetter;
+    const encryptedIndex = positiveModulo(
+      this.mapping.get(index)! - this.position,
+      this.alphabetSize
+    );
+    return this.alphabetReverse.get(encryptedIndex)!;
   }
 
   encryptReverse(letter: string): string {
-    const index = positiveModulo(
-      this.mappingReverse.get(letter)! - this.position,
+    const index = positiveModulo(this.alphabet.get(letter)! + this.position, this.alphabetSize);
+    const encryptedIndex = positiveModulo(
+      this.mappingReverse.get(index)! - this.position,
       this.alphabetSize
     );
-    const encryptedLetter = this.alphabetReverse.get(index)!;
-    return encryptedLetter;
+    return this.alphabetReverse.get(encryptedIndex)!;
   }
 
   setPosition(letter: string) {
