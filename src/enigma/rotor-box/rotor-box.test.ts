@@ -63,4 +63,34 @@ describe(RotorBox.name, () => {
       expect(rotorBox.encrypt('P')).toEqual('K');
     });
   });
+
+  describe('step', () => {
+    it('should move last rotor to next position', () => {
+      const rotor0 = createRotorI();
+      const rotor1 = createRotorII();
+      rotor0.setPosition('A');
+      rotor1.setPosition('A');
+      const rotorBox = new RotorBox([rotor0, rotor1], createReflectorA());
+
+      rotorBox.step();
+
+      expect(rotor1.positionLabel).toEqual('B');
+    });
+
+    it('should move next rotor if rotor passes turnover position', () => {
+      const rotor0 = createRotorI();
+      const rotor1 = createRotorII();
+      const rotor2 = createRotorIII();
+      rotor0.setPosition('Q');
+      rotor1.setPosition('E');
+      rotor2.setPosition('V');
+      const rotorBox = new RotorBox([rotor0, rotor1, rotor2], createReflectorA());
+
+      rotorBox.step();
+
+      expect(rotor0.positionLabel).toEqual('R');
+      expect(rotor1.positionLabel).toEqual('F');
+      expect(rotor2.positionLabel).toEqual('W');
+    });
+  });
 });

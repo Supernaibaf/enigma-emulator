@@ -19,4 +19,13 @@ export class RotorBox {
     }
     return encryptedLetter;
   }
+
+  step() {
+    let rotorPosition = this.rotors.length - 1;
+    let turnover = false;
+    do {
+      turnover = this.rotors[rotorPosition].step();
+      rotorPosition--;
+    } while (turnover && rotorPosition >= 0);
+  }
 }
