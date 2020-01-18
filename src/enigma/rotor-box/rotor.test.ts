@@ -57,6 +57,18 @@ describe(Rotor.name, () => {
     });
   });
 
+  describe('setRingSetting', () => {
+    it('should change mapping correctly', () => {
+      const rotor = createRotorI();
+      rotor.setPosition('B');
+
+      rotor.setRingSetting('B');
+
+      expect(rotor.encrypt('A')).toEqual('E');
+      expect(rotor.encryptReverse('E')).toEqual('A');
+    });
+  });
+
   describe('step', () => {
     it('should move position one step further', () => {
       const rotor = createRotorI();

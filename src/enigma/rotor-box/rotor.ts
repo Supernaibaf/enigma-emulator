@@ -15,6 +15,8 @@ export class Rotor {
 
   private position: number;
 
+  private ringSetting: number;
+
   get positionLabel(): string {
     return this.alphabetReverse.get(this.position)!;
   }
@@ -22,6 +24,7 @@ export class Rotor {
   constructor(alphabet: string[], mapping: string[], turnover: string) {
     this.alphabetSize = alphabet.length;
     this.position = 0;
+    this.ringSetting = 0;
     this.turnover = alphabet.indexOf(turnover);
 
     this.alphabet = new Map<string, number>();
@@ -39,18 +42,24 @@ export class Rotor {
   }
 
   encrypt(letter: string): string {
-    const index = positiveModulo(this.alphabet.get(letter)! + this.position, this.alphabetSize);
+    const index = positiveModulo(
+      this.alphabet.get(letter)! + this.position - this.ringSetting,
+      this.alphabetSize
+    );
     const encryptedIndex = positiveModulo(
-      this.mapping.get(index)! - this.position,
+      this.mapping.get(index)! - this.position + this.ringSetting,
       this.alphabetSize
     );
     return this.alphabetReverse.get(encryptedIndex)!;
   }
 
   encryptReverse(letter: string): string {
-    const index = positiveModulo(this.alphabet.get(letter)! + this.position, this.alphabetSize);
+    const index = positiveModulo(
+      this.alphabet.get(letter)! + this.position - this.ringSetting,
+      this.alphabetSize
+    );
     const encryptedIndex = positiveModulo(
-      this.mappingReverse.get(index)! - this.position,
+      this.mappingReverse.get(index)! - this.position + this.ringSetting,
       this.alphabetSize
     );
     return this.alphabetReverse.get(encryptedIndex)!;
@@ -58,6 +67,10 @@ export class Rotor {
 
   setPosition(letter: string) {
     this.position = this.alphabet.get(letter)!;
+  }
+
+  setRingSetting(letter: string) {
+    this.ringSetting = this.alphabet.get(letter)!;
   }
 
   step(): boolean {
