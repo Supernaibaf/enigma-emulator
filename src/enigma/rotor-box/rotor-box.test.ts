@@ -12,6 +12,7 @@ function stringToCharArray(str: string): string[] {
 
 function createRotorI(): Rotor {
   return new Rotor(
+    'I',
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     stringToCharArray('EKMFLGDQVZNTOWYHXUSPAIBRCJ'),
     'Q'
@@ -20,6 +21,7 @@ function createRotorI(): Rotor {
 
 function createRotorII(): Rotor {
   return new Rotor(
+    'II',
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     stringToCharArray('AJDKSIRUXBLHWTMCQGZNPYFVOE'),
     'E'
@@ -28,6 +30,7 @@ function createRotorII(): Rotor {
 
 function createRotorIII(): Rotor {
   return new Rotor(
+    'III',
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     stringToCharArray('BDFHJLCPRTXVZNYEIWGAKMUSQO'),
     'V'
@@ -36,8 +39,17 @@ function createRotorIII(): Rotor {
 
 function createReflectorB(): Reflector {
   return new Reflector(
+    'UKW-B',
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     stringToCharArray('YRUHQSLDPXNGOKMIEBFZCWVJAT	')
+  );
+}
+
+function createReflectorC(): Reflector {
+  return new Reflector(
+    'UKW-C',
+    stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
+    stringToCharArray('FVPJIAOYEDRZXWGCTKUQSBNMHL')
   );
 }
 
@@ -91,6 +103,36 @@ describe(RotorBox.name, () => {
       expect(rotor0.positionLabel).toEqual('R');
       expect(rotor1.positionLabel).toEqual('F');
       expect(rotor2.positionLabel).toEqual('W');
+    });
+  });
+
+  describe('setRotor', () => {
+    it('should set the rotor correctly', () => {
+      const rotor0 = createRotorI();
+      const rotor1 = createRotorII();
+      rotor0.setPosition('A');
+      rotor1.setPosition('A');
+      const rotorBox = new RotorBox([rotor0, rotor1], createReflectorB());
+
+      const newRotor = createRotorIII();
+      rotorBox.setRotor(1, newRotor);
+
+      expect(rotorBox.rotors[1]).toEqual(newRotor);
+    });
+  });
+
+  describe('setReflector', () => {
+    it('should set the reflector correctly', () => {
+      const rotor0 = createRotorI();
+      const rotor1 = createRotorII();
+      rotor0.setPosition('A');
+      rotor1.setPosition('A');
+      const rotorBox = new RotorBox([rotor0, rotor1], createReflectorB());
+
+      const newReflector = createReflectorC();
+      rotorBox.setReflector(newReflector);
+
+      expect(rotorBox.reflector).toEqual(newReflector);
     });
   });
 });

@@ -2,10 +2,21 @@ import { Rotor } from './rotor';
 import { Reflector } from './reflector';
 
 export class RotorBox {
-  private rotors: Rotor[];
+  private placedRotors: Rotor[];
 
-  constructor(rotors: Rotor[], private reflector: Reflector) {
-    this.rotors = Array.from(rotors);
+  private placedReflector: Reflector;
+
+  get rotors(): Rotor[] {
+    return this.placedRotors;
+  }
+
+  get reflector(): Reflector {
+    return this.placedReflector;
+  }
+
+  constructor(rotors: Rotor[], reflector: Reflector) {
+    this.placedRotors = [...rotors];
+    this.placedReflector = reflector;
   }
 
   encrypt(letter: string): any {
@@ -27,5 +38,13 @@ export class RotorBox {
       turnover = this.rotors[rotorPosition].step();
       rotorPosition--;
     } while (turnover && rotorPosition >= 0);
+  }
+
+  setReflector(reflector: Reflector) {
+    this.placedReflector = reflector;
+  }
+
+  setRotor(position: number, rotor: Rotor) {
+    this.rotors[position] = rotor;
   }
 }
