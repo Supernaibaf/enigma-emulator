@@ -1,0 +1,112 @@
+body {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#enigma-container {
+  position: relative;
+  box-sizing: border-box;
+  background-color: rgb(162, 105, 50);
+  height: 100vh;
+  width: 100vw;
+  max-height: calc((100vw - 20px) / 1000 * 1050 + 20px);
+  max-width: calc((100vh - 20px) / 1050 * 1000 + 20px);
+  padding: 20px;
+}
+
+#enigma-configuration-container {
+  position: absolute;
+  box-sizing: border-box;
+  z-index: 1;
+  width: calc(100% - 40px);
+  color: rgb(209, 198, 178);
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+}
+
+#enigma-configuration-container.open {
+  height: calc(100% - 40px);
+}
+
+#enigma-configuration-container > .header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1em;
+}
+
+#enigma-configuration-container > .header > h1 {
+  font-weight: normal;
+  letter-spacing: 0.02em;
+}
+
+#enigma-configuration {
+  width: 100%;
+  flex-grow: 1;
+  display: none;
+}
+
+#enigma-configuration section,
+#enigma-configuration footer {
+  padding: 1em;
+}
+
+#enigma-configuration h2,
+#enigma-configuration table th {
+  font-weight: normal;
+  text-align: left;
+  letter-spacing: 0.02em;
+}
+
+#enigma-configuration h2 {
+  margin: 0 0 0.2em 0;
+}
+
+#enigma-configuration table {
+  color: rgb(209, 198, 178);
+  border-collapse: collapse;
+}
+
+#enigma-configuration table td,
+#enigma-configuration table th {
+  width: 9em;
+  padding: 0.5em 0;
+}
+
+#enigma-configuration select {
+  background-color: rgb(209, 198, 178);
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  padding: 0.5em;
+  width: 8em;
+}
+
+#enigma-configuration footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#enigma-configuration-container.open > #enigma-configuration {
+  display: block;
+}
+
+#enigma-emulator {
+  height: 100%;
+  width: 100%;
+}
+
+button {
+  font-size: 1.2em;
+  padding: 0.5em 1.4em;
+  border-radius: 4px;
+  background-color: rgb(209, 198, 178);
+  color: rgb(1, 1, 1);
+  border: none;
+  cursor: pointer;
+}

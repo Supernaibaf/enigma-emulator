@@ -6,7 +6,45 @@
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <h1>Enigma Emulator</h1>
-    <div id="enigma-emulator"></div>
+    <div id="enigma-container">
+      <div id="enigma-configuration-container">
+        <div class="header">
+          <h1>Enigma Emulator</h1>
+          <button id="enigma-configuration-button">Configure</button>
+        </div>
+        <div id="enigma-configuration">
+          <form id="enigma-configuration-form">
+            <section>
+              <header>
+                <h2>Reflector</h2>
+              </header>
+              <select class="reflector">
+                <option>Hello</option>
+              </select>
+            </section>
+            <section>
+              <header>
+                <h2>Rotors</h2>
+              </header>
+              <table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>Type</th>
+                    <th>Position</th>
+                    <th>Ring</th>
+                  </tr>
+                </thead>
+                <tbody class="rotors"></tbody>
+              </table>
+            </section>
+            <footer>
+              <button type="submit">Apply Settings</button>
+            </footer>
+          </form>
+        </div>
+      </div>
+      <canvas id="enigma-emulator"></canvas>
+    </div>
   </body>
 </html>
