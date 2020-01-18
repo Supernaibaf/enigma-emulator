@@ -21,7 +21,20 @@ export class Rotor {
     return this.alphabetReverse.get(this.position)!;
   }
 
-  constructor(alphabet: string[], mapping: string[], turnover: string) {
+  get ringSettingLabel(): string {
+    return this.alphabetReverse.get(this.ringSetting)!;
+  }
+
+  get type(): string {
+    return this.typeDescription;
+  }
+
+  constructor(
+    private typeDescription: string,
+    alphabet: string[],
+    mapping: string[],
+    turnover: string
+  ) {
     this.alphabetSize = alphabet.length;
     this.position = 0;
     this.ringSetting = 0;

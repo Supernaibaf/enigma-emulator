@@ -10,6 +10,7 @@ function stringToCharArray(str: string): string[] {
 
 function createRotorI(): Rotor {
   return new Rotor(
+    'I',
     stringToCharArray('ABCDEFGHIJKLMNOPQRSTUVWXYZ'),
     stringToCharArray('EKMFLGDQVZNTOWYHXUSPAIBRCJ'),
     'Q'
