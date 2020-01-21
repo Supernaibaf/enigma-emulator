@@ -35,4 +35,18 @@ describe(Plugboard.name, () => {
       expect(plugboard.encrypt('N')).toEqual('N');
     });
   });
+
+  describe('get plugs', () => {
+    it('should return a plug per connection', () => {
+      const plugboard = new Plugboard();
+
+      plugboard.addConnection('Z', 'X');
+      plugboard.addConnection('B', 'L');
+
+      expect(plugboard.plugs).toEqual([
+        { origin: 'Z', target: 'X' },
+        { origin: 'B', target: 'L' }
+      ]);
+    });
+  });
 });

@@ -13,6 +13,7 @@ import {
   ROTOR_LABEL_LETTER
 } from './colors';
 import { EnigmaConfiguration } from '../enigma/enigma-configurations';
+import { ENIGMA_FONT } from './fonts';
 
 type KeyPosition = {
   key: string;
@@ -36,8 +37,6 @@ function drawSubcomponent(
   drawMethod(context);
   context.restore();
 }
-
-const FONT = '30px Arial';
 
 const ROTORBOARD_POSITION = 0;
 const ROTORBOARD_HEIGHT = 0.45;
@@ -114,7 +113,7 @@ export class EnigmaUI {
         c.fillStyle = ROTOR_LABEL;
         c.fillRect(leftOrigin, rotorLabelPosition, rotorLabelWidth, rotorLabelHeight);
         c.fillStyle = ROTOR_LABEL_LETTER;
-        c.font = FONT;
+        c.font = ENIGMA_FONT;
         c.textAlign = 'center';
         c.textBaseline = 'middle';
         c.fillText(
@@ -141,7 +140,7 @@ export class EnigmaUI {
         c.arc(lampX, lampY, radius, 0, 2 * Math.PI);
         c.fill();
         c.fillStyle = this.encryptedKey === key ? LAMP_LETTER_ENLIGHTED : LAMP_LETTER;
-        c.font = FONT;
+        c.font = ENIGMA_FONT;
         c.textAlign = 'center';
         c.textBaseline = 'middle';
         c.fillText(key, lampX, lampY);
@@ -168,7 +167,7 @@ export class EnigmaUI {
         c.arc(keyX, keyY, innerRadius, 0, 2 * Math.PI);
         c.fill();
         c.fillStyle = this.pressedKey === key ? KEY_LETTER_PRESSED : KEY_LETTER;
-        c.font = FONT;
+        c.font = ENIGMA_FONT;
         c.textAlign = 'center';
         c.textBaseline = 'middle';
         c.fillText(KEY_POSITIONS[i].key, keyX, keyY);

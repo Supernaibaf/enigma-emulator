@@ -12,15 +12,16 @@ body {
   background-color: rgb(162, 105, 50);
   height: 100vh;
   width: 100vw;
-  max-height: calc((100vw - 20px) / 1000 * 1050 + 20px);
-  max-width: calc((100vh - 20px) / 1050 * 1000 + 20px);
+  max-height: calc((100vw - 20px) / 1000 * 1460 + 20px);
+  max-width: calc((100vh - 20px) / 1460 * 1000 + 20px);
   padding: 20px;
 }
 
 #enigma-configuration-container {
   position: absolute;
   box-sizing: border-box;
-  z-index: 1;
+  z-index: 10;
+  overflow: hidden;
   width: calc(100% - 40px);
   color: rgb(209, 198, 178);
   background-color: rgba(0, 0, 0, 0.6);
@@ -49,6 +50,7 @@ body {
   width: 100%;
   flex-grow: 1;
   display: none;
+  overflow-y: auto;
 }
 
 #enigma-configuration section,
@@ -72,8 +74,8 @@ body {
   border-collapse: collapse;
 }
 
-#enigma-configuration table td,
-#enigma-configuration table th {
+#enigma-configuration td,
+#enigma-configuration th {
   width: 9em;
   padding: 0.5em 0;
 }
@@ -97,7 +99,33 @@ body {
 }
 
 #enigma-emulator {
+  height: 72%;
+  width: 100%;
+}
+
+#enigma-plugboard-container {
+  position: relative;
+}
+
+#enigma-plugboard-socket-buttons {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0);
   height: 100%;
+  width: 100%;
+  z-index: 1;
+}
+
+#enigma-plugboard-socket-buttons button {
+  position: absolute;
+  display: block;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  outline: none;
+}
+
+#enigma-plugboard {
+  height: 28%;
   width: 100%;
 }
 
@@ -109,4 +137,79 @@ button {
   color: rgb(1, 1, 1);
   border: none;
   cursor: pointer;
+}
+
+#enigma-configuration-button {
+  padding: 0;
+  background-color: transparent;
+}
+
+#enigma-configuration-button > svg {
+  fill: rgb(209, 198, 178);
+  height: 2em;
+  width: 2em;
+}
+
+@media (max-width: 500px), (max-height: 720px) {
+  .header > h1 {
+    font-size: 1.5em;
+  }
+
+  #enigma-configuration h2 {
+    font-size: 1.4em;
+  }
+
+  #enigma-container {
+    padding: 0;
+    max-height: calc(100vw / 1000 * 1460);
+    max-width: calc(100vh / 1460 * 1000);
+  }
+
+  #enigma-configuration-container {
+    width: 100%;
+  }
+
+  #enigma-configuration-container.open {
+    height: 100%;
+  }
+
+  #enigma-rotor-table thead {
+    display: none;
+  }
+
+  #enigma-rotor-table td {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  #enigma-rotor-table,
+  #enigma-rotor-table tbody,
+  #enigma-rotor-table th,
+  #enigma-rotor-table td,
+  #enigma-rotor-table tr {
+    display: block;
+  }
+
+  #enigma-rotor-table td:before {
+    display: block;
+    margin: 0 0 0.2em 0;
+  }
+
+  #enigma-rotor-table td:nth-of-type(1) {
+    font-size: 1.2em;
+  }
+
+  #enigma-rotor-table td:nth-of-type(2):before {
+    content: 'Type';
+  }
+  #enigma-rotor-table td:nth-of-type(3):before {
+    content: 'Position';
+  }
+  #enigma-rotor-table td:nth-of-type(4):before {
+    content: 'Ring';
+  }
+
+  #enigma-configuration select {
+    width: 100%;
+  }
 }

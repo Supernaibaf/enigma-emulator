@@ -1,6 +1,7 @@
 import { EnigmaUI } from './ui/enigma-ui';
 import { EnigmaConfiguration, createEnigmaM3 } from './enigma/enigma-configurations';
 import { Configuration } from './ui/configuration';
+import { PlugboardUI } from './ui/plugboard-ui';
 
 (function initialize() {
   const ENIGMA_HEIGHT = 1050;
@@ -11,6 +12,8 @@ import { Configuration } from './ui/configuration';
   let enigmaUI: EnigmaUI;
   let context: CanvasRenderingContext2D;
   let pressedKey: string | undefined;
+  let plugboard: CanvasRenderingContext2D;
+  let plugboardUI: PlugboardUI;
   let configurationParent: HTMLElement;
   let configurationContainer: HTMLElement;
   let configuration: Configuration | undefined;
@@ -32,15 +35,27 @@ import { Configuration } from './ui/configuration';
     e.preventDefault();
   }
 
+  function initializeCanvasContext(
+    id: string,
+    width: number,
+    height: number
+  ): CanvasRenderingContext2D {
+    const canvas = document.getElementById(id) as HTMLCanvasElement;
+    canvas.height = height;
+    canvas.width = width;
+    return canvas.getContext('2d')!;
+  }
+
   window.addEventListener('load', () => {
-    const canvas = document.getElementById('enigma-emulator') as HTMLCanvasElement;
-    canvas.height = ENIGMA_HEIGHT;
-    canvas.width = ENIGMA_WIDTH;
-    context = canvas.getContext('2d')!;
+    context = initializeCanvasContext('enigma-emulator', ENIGMA_WIDTH, ENIGMA_HEIGHT);
     enigmaConfiguration = createEnigmaM3();
     enigmaUI = new EnigmaUI(enigmaConfiguration, ENIGMA_WIDTH, ENIGMA_HEIGHT);
     enigmaUI.draw(context);
 
+    plugboard = initializeCanvasContext('enigma-plugboard', 1000, 410);
+    plugboardUI = new PlugboardUI(1000, 410, enigmaConfiguration.plugboard, plugboard);
+    plugboardUI.initializeSockets(document.getElementById('enigma-plugboard-socket-buttons')!);
+    plugboardUI.draw();
     configurationParent = document.getElementById('enigma-configuration-container')!;
     configurationContainer = document.getElementById('enigma-configuration')!;
     document
