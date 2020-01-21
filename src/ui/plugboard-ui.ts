@@ -12,6 +12,12 @@ type PlugboardHalfConnection = {
   color: string;
 };
 
+type SocketPosition = {
+  letter: string;
+  x: number;
+  y: number;
+};
+
 const PLUG_RADIUS = 0.025;
 const LETTER_OFFSET = 0.05;
 const SOCKET_OUTER_RADIUS = 0.018;
@@ -19,33 +25,33 @@ const SOCKET_TOP_OFFSET = 0.136;
 const SOCKET_TOP_INNER_RADIUS = 0.012;
 const SOCKET_BOTTOM_OFFSET = 0.28;
 const SOCKET_BOTTOM_INNER_RADIUS = 0.007;
-const SOCKET_POSITIONS = [
-  { key: 'A', x: 0.095, y: 0 },
-  { key: 'B', x: 0.185, y: 0 },
-  { key: 'C', x: 0.275, y: 0 },
-  { key: 'D', x: 0.365, y: 0 },
-  { key: 'E', x: 0.455, y: 0 },
-  { key: 'F', x: 0.545, y: 0 },
-  { key: 'G', x: 0.635, y: 0 },
-  { key: 'H', x: 0.725, y: 0 },
-  { key: 'I', x: 0.815, y: 0 },
-  { key: 'J', x: 0.905, y: 0 },
-  { key: 'K', x: 0.14, y: 0.292 },
-  { key: 'L', x: 0.23, y: 0.292 },
-  { key: 'M', x: 0.32, y: 0.292 },
-  { key: 'N', x: 0.41, y: 0.292 },
-  { key: 'O', x: 0.59, y: 0.292 },
-  { key: 'P', x: 0.68, y: 0.292 },
-  { key: 'Q', x: 0.77, y: 0.292 },
-  { key: 'R', x: 0.86, y: 0.292 },
-  { key: 'S', x: 0.095, y: 0.584 },
-  { key: 'T', x: 0.185, y: 0.584 },
-  { key: 'U', x: 0.275, y: 0.584 },
-  { key: 'V', x: 0.365, y: 0.584 },
-  { key: 'W', x: 0.635, y: 0.584 },
-  { key: 'X', x: 0.725, y: 0.584 },
-  { key: 'Y', x: 0.815, y: 0.584 },
-  { key: 'Z', x: 0.905, y: 0.584 }
+const SOCKET_POSITIONS: SocketPosition[] = [
+  { letter: 'A', x: 0.095, y: 0 },
+  { letter: 'B', x: 0.185, y: 0 },
+  { letter: 'C', x: 0.275, y: 0 },
+  { letter: 'D', x: 0.365, y: 0 },
+  { letter: 'E', x: 0.455, y: 0 },
+  { letter: 'F', x: 0.545, y: 0 },
+  { letter: 'G', x: 0.635, y: 0 },
+  { letter: 'H', x: 0.725, y: 0 },
+  { letter: 'I', x: 0.815, y: 0 },
+  { letter: 'J', x: 0.905, y: 0 },
+  { letter: 'K', x: 0.14, y: 0.292 },
+  { letter: 'L', x: 0.23, y: 0.292 },
+  { letter: 'M', x: 0.32, y: 0.292 },
+  { letter: 'N', x: 0.41, y: 0.292 },
+  { letter: 'O', x: 0.59, y: 0.292 },
+  { letter: 'P', x: 0.68, y: 0.292 },
+  { letter: 'Q', x: 0.77, y: 0.292 },
+  { letter: 'R', x: 0.86, y: 0.292 },
+  { letter: 'S', x: 0.095, y: 0.584 },
+  { letter: 'T', x: 0.185, y: 0.584 },
+  { letter: 'U', x: 0.275, y: 0.584 },
+  { letter: 'V', x: 0.365, y: 0.584 },
+  { letter: 'W', x: 0.635, y: 0.584 },
+  { letter: 'X', x: 0.725, y: 0.584 },
+  { letter: 'Y', x: 0.815, y: 0.584 },
+  { letter: 'Z', x: 0.905, y: 0.584 }
 ];
 
 export class PlugboardUI {
@@ -64,38 +70,52 @@ export class PlugboardUI {
 
   private drawSockets() {
     SOCKET_POSITIONS.forEach(s => {
-      const socketX = this.width * s.x;
-      const socketTopY = this.height * s.y + this.height * SOCKET_TOP_OFFSET;
-      const socketBottomY = this.height * s.y + this.height * SOCKET_BOTTOM_OFFSET;
-      const letterY = this.height * s.y + this.height * LETTER_OFFSET;
-      this.context.fillStyle = SOCKET_OUTER;
-      this.context.beginPath();
-      this.context.arc(socketX, socketTopY, SOCKET_OUTER_RADIUS * this.width, 0, 2 * Math.PI);
-      this.context.fill();
-      this.context.fillStyle = SOCKET_INNER;
-      this.context.beginPath();
-      this.context.arc(socketX, socketTopY, SOCKET_TOP_INNER_RADIUS * this.width, 0, 2 * Math.PI);
-      this.context.fill();
-      this.context.fillStyle = SOCKET_OUTER;
-      this.context.beginPath();
-      this.context.arc(socketX, socketBottomY, SOCKET_OUTER_RADIUS * this.width, 0, 2 * Math.PI);
-      this.context.fill();
-      this.context.fillStyle = SOCKET_INNER;
-      this.context.beginPath();
-      this.context.arc(
-        socketX,
-        socketBottomY,
-        SOCKET_BOTTOM_INNER_RADIUS * this.width,
-        0,
-        2 * Math.PI
-      );
-      this.context.fill();
-      this.context.fillStyle = SOCKET_OUTER;
-      this.context.font = PLUGBOARD_FONT;
-      this.context.textAlign = 'center';
-      this.context.textBaseline = 'middle';
-      this.context.fillText(s.key, socketX, letterY);
+      this.drawTopSocket(s);
+      this.drawBottomSocket(s);
+      this.drawSocketLetter(s);
     });
+  }
+
+  private drawSocketLetter(socket: SocketPosition) {
+    const socketX = this.width * socket.x;
+    const letterY = this.height * socket.y + this.height * LETTER_OFFSET;
+    this.context.fillStyle = SOCKET_OUTER;
+    this.context.font = PLUGBOARD_FONT;
+    this.context.textAlign = 'center';
+    this.context.textBaseline = 'middle';
+    this.context.fillText(socket.letter, socketX, letterY);
+  }
+
+  private drawBottomSocket(socket: SocketPosition) {
+    const socketX = this.width * socket.x;
+    const socketBottomY = this.height * socket.y + this.height * SOCKET_BOTTOM_OFFSET;
+    this.context.fillStyle = SOCKET_OUTER;
+    this.context.beginPath();
+    this.context.arc(socketX, socketBottomY, SOCKET_OUTER_RADIUS * this.width, 0, 2 * Math.PI);
+    this.context.fill();
+    this.context.fillStyle = SOCKET_INNER;
+    this.context.beginPath();
+    this.context.arc(
+      socketX,
+      socketBottomY,
+      SOCKET_BOTTOM_INNER_RADIUS * this.width,
+      0,
+      2 * Math.PI
+    );
+    this.context.fill();
+  }
+
+  private drawTopSocket(socket: SocketPosition) {
+    const socketX = this.width * socket.x;
+    const socketTopY = this.height * socket.y + this.height * SOCKET_TOP_OFFSET;
+    this.context.fillStyle = SOCKET_OUTER;
+    this.context.beginPath();
+    this.context.arc(socketX, socketTopY, SOCKET_OUTER_RADIUS * this.width, 0, 2 * Math.PI);
+    this.context.fill();
+    this.context.fillStyle = SOCKET_INNER;
+    this.context.beginPath();
+    this.context.arc(socketX, socketTopY, SOCKET_TOP_INNER_RADIUS * this.width, 0, 2 * Math.PI);
+    this.context.fill();
   }
 
   private drawPlugs() {
@@ -109,7 +129,7 @@ export class PlugboardUI {
   }
 
   private drawPlug(key: string, color: string) {
-    const plugPosition = SOCKET_POSITIONS.find(s => s.key === key)!;
+    const plugPosition = SOCKET_POSITIONS.find(s => s.letter === key)!;
     const plugX = plugPosition.x * this.width;
     const plugTopY = plugPosition.y * this.height + SOCKET_TOP_OFFSET * this.height;
     const plugBottomY = plugPosition.y * this.height + SOCKET_BOTTOM_OFFSET * this.height;
@@ -167,7 +187,7 @@ export class PlugboardUI {
       const top = (SOCKET_TOP_OFFSET + s.y - plugRadiusForHeight) * 100;
       const left = (s.x - PLUG_RADIUS) * 100;
       const button = document.createElement('button');
-      button.addEventListener('click', () => this.socketClick(s.key));
+      button.addEventListener('click', () => this.socketClick(s.letter));
       button.style.width = `${buttonWidth}%`;
       button.style.height = `${buttonHeight}%`;
       button.style.top = `${top}%`;

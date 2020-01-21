@@ -2,18 +2,18 @@ import { EnigmaUI } from './ui/enigma-ui';
 import { EnigmaConfiguration, createEnigmaM3 } from './enigma/enigma-configurations';
 import { Configuration } from './ui/configuration';
 import { PlugboardUI } from './ui/plugboard-ui';
+import { KeyboardUI } from './ui/keyboard-ui';
+import { LampboardUI } from './ui/lampboard-ui';
 
 (function initialize() {
-  const ENIGMA_HEIGHT = 1050;
+  const ENIGMA_HEIGHT = 470;
   const ENIGMA_WIDTH = 1000;
   const CONFIGURATION_OPEN_CLASS = 'open';
 
   let enigmaConfiguration: EnigmaConfiguration;
   let enigmaUI: EnigmaUI;
   let context: CanvasRenderingContext2D;
-  let pressedKey: string | undefined;
-  let plugboard: CanvasRenderingContext2D;
-  let plugboardUI: PlugboardUI;
+  let lampboardUI: LampboardUI;
   let configurationParent: HTMLElement;
   let configurationContainer: HTMLElement;
   let configuration: Configuration | undefined;
@@ -46,16 +46,46 @@ import { PlugboardUI } from './ui/plugboard-ui';
     return canvas.getContext('2d')!;
   }
 
+  function keyDownListener(letter: string) {
+    const encryptedLetter = enigmaConfiguration.enigma.encrypt(letter);
+    lampboardUI.setEncryptedKey(encryptedLetter);
+    lampboardUI.draw();
+    enigmaUI.draw(context);
+  }
+
+  function keyUpListener() {
+    lampboardUI.resetEncryptedKey();
+    lampboardUI.draw();
+    enigmaUI.draw(context);
+  }
+
   window.addEventListener('load', () => {
     context = initializeCanvasContext('enigma-emulator', ENIGMA_WIDTH, ENIGMA_HEIGHT);
     enigmaConfiguration = createEnigmaM3();
     enigmaUI = new EnigmaUI(enigmaConfiguration, ENIGMA_WIDTH, ENIGMA_HEIGHT);
     enigmaUI.draw(context);
 
-    plugboard = initializeCanvasContext('enigma-plugboard', 1000, 410);
-    plugboardUI = new PlugboardUI(1000, 410, enigmaConfiguration.plugboard, plugboard);
+    const plugboard = initializeCanvasContext('enigma-plugboard', 1000, 410);
+    const plugboardUI = new PlugboardUI(1000, 410, enigmaConfiguration.plugboard, plugboard);
     plugboardUI.initializeSockets(document.getElementById('enigma-plugboard-socket-buttons')!);
     plugboardUI.draw();
+
+    const keyboard = initializeCanvasContext('enigma-keyboard', 1000, 290);
+    const keyboardUI = new KeyboardUI(
+      1000,
+      290,
+      keyboard,
+      1000,
+      k => keyDownListener(k),
+      () => keyUpListener()
+    );
+    keyboardUI.initializeKeys(document.getElementById('enigma-keyboard-buttons')!);
+    keyboardUI.draw();
+
+    const lampboard = initializeCanvasContext('enigma-lampboard', 1000, 290);
+    lampboardUI = new LampboardUI(1000, 290, lampboard);
+    lampboardUI.draw();
+
     configurationParent = document.getElementById('enigma-configuration-container')!;
     configurationContainer = document.getElementById('enigma-configuration')!;
     document
@@ -64,26 +94,5 @@ import { PlugboardUI } from './ui/plugboard-ui';
     document
       .getElementById('enigma-configuration-form')!
       .addEventListener('submit', submitConfiguration);
-  });
-
-  window.addEventListener('keydown', e => {
-    const letter = e.key.toUpperCase();
-    if (pressedKey !== letter && enigmaConfiguration.alphabet.includes(letter)) {
-      pressedKey = letter;
-      const encryptedLetter = enigmaConfiguration.enigma.encrypt(letter);
-      enigmaUI.setPressedKey(letter);
-      enigmaUI.setEncryptedKey(encryptedLetter);
-      enigmaUI.draw(context);
-    }
-  });
-
-  window.addEventListener('keyup', e => {
-    const letter = e.key.toUpperCase();
-    if (pressedKey === letter) {
-      enigmaUI.resetPressedKey();
-      enigmaUI.resetEncryptedKey();
-      enigmaUI.draw(context);
-      pressedKey = undefined;
-    }
   });
 })();

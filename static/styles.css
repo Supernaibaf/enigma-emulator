@@ -99,15 +99,18 @@ body {
 }
 
 #enigma-emulator {
-  height: 72%;
+  height: 32%;
   width: 100%;
 }
 
-#enigma-plugboard-container {
+#enigma-plugboard-container,
+#enigma-keyboard-container,
+#enigma-lampboard-container {
   position: relative;
 }
 
-#enigma-plugboard-socket-buttons {
+#enigma-plugboard-socket-buttons,
+#enigma-keyboard-buttons {
   position: absolute;
   background-color: rgba(0, 0, 0, 0);
   height: 100%;
@@ -115,7 +118,8 @@ body {
   z-index: 1;
 }
 
-#enigma-plugboard-socket-buttons button {
+#enigma-plugboard-socket-buttons button,
+#enigma-keyboard-buttons button {
   position: absolute;
   display: block;
   padding: 0;
@@ -126,6 +130,12 @@ body {
 
 #enigma-plugboard {
   height: 28%;
+  width: 100%;
+}
+
+#enigma-keyboard,
+#enigma-lampboard {
+  height: 20%;
   width: 100%;
 }
 
