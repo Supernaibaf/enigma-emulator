@@ -22,14 +22,10 @@ function createSelectOption(text: string): HTMLOptionElement {
   return option;
 }
 
-function createSelectElement<T>(
-  elements: T[],
-  getText: (elem: T) => string,
-  value?: string
-): HTMLSelectElement {
+function createSelectElement<T>(elements: string[], value?: string): HTMLSelectElement {
   const selectElement = document.createElement('select');
   elements.forEach(e => {
-    selectElement.appendChild(createSelectOption(getText(e)));
+    selectElement.appendChild(createSelectOption(e));
   });
   if (value) {
     selectElement.value = value;
@@ -64,9 +60,12 @@ export class Configuration {
       name.innerText = `Rotor ${i + 1}`;
       const type = document.createElement('td');
       const rotorSelectElements = {
-        type: createSelectElement(availableRotors, a => a.type, r.type),
-        position: createSelectElement(alphabet, a => a, r.positionLabel),
-        ringSetting: createSelectElement(alphabet, a => a, r.ringSettingLabel)
+        type: createSelectElement(
+          availableRotors.map(a => a.type),
+          r.type
+        ),
+        position: createSelectElement(alphabet, r.positionLabel),
+        ringSetting: createSelectElement(alphabet, r.ringSettingLabel)
       };
       this.rotorSelectors.push(rotorSelectElements);
       type.appendChild(rotorSelectElements.type);
