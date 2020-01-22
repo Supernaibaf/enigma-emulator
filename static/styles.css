@@ -98,14 +98,10 @@ body {
   display: block;
 }
 
-#enigma-emulator {
-  height: 32%;
-  width: 100%;
-}
-
 #enigma-plugboard-container,
 #enigma-keyboard-container,
-#enigma-lampboard-container {
+#enigma-lampboard-container,
+#enigma-rotorbox-container {
   position: relative;
 }
 
@@ -126,6 +122,11 @@ body {
   border-radius: 0;
   background-color: transparent;
   outline: none;
+}
+
+#enigma-rotorbox {
+  height: 32%;
+  width: 100%;
 }
 
 #enigma-plugboard {

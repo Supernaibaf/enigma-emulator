@@ -1,19 +1,16 @@
-import { EnigmaUI } from './ui/enigma-ui';
 import { EnigmaConfiguration, createEnigmaM3 } from './enigma/enigma-configurations';
 import { Configuration } from './ui/configuration';
 import { PlugboardUI } from './ui/plugboard-ui';
 import { KeyboardUI } from './ui/keyboard-ui';
 import { LampboardUI } from './ui/lampboard-ui';
+import { RotorBoxUI } from './ui/rotor-box-ui';
 
 (function initialize() {
-  const ENIGMA_HEIGHT = 470;
-  const ENIGMA_WIDTH = 1000;
   const CONFIGURATION_OPEN_CLASS = 'open';
 
   let enigmaConfiguration: EnigmaConfiguration;
-  let enigmaUI: EnigmaUI;
-  let context: CanvasRenderingContext2D;
   let lampboardUI: LampboardUI;
+  let rotorBoxUI: RotorBoxUI;
   let configurationParent: HTMLElement;
   let configurationContainer: HTMLElement;
   let configuration: Configuration | undefined;
@@ -31,7 +28,7 @@ import { LampboardUI } from './ui/lampboard-ui';
   function submitConfiguration(e: Event) {
     configuration?.submit();
     toggleConfiguration();
-    enigmaUI.draw(context);
+    rotorBoxUI.draw();
     e.preventDefault();
   }
 
@@ -50,20 +47,21 @@ import { LampboardUI } from './ui/lampboard-ui';
     const encryptedLetter = enigmaConfiguration.enigma.encrypt(letter);
     lampboardUI.setEncryptedKey(encryptedLetter);
     lampboardUI.draw();
-    enigmaUI.draw(context);
+    rotorBoxUI.draw();
   }
 
   function keyUpListener() {
     lampboardUI.resetEncryptedKey();
     lampboardUI.draw();
-    enigmaUI.draw(context);
+    rotorBoxUI.draw();
   }
 
   window.addEventListener('load', () => {
-    context = initializeCanvasContext('enigma-emulator', ENIGMA_WIDTH, ENIGMA_HEIGHT);
     enigmaConfiguration = createEnigmaM3();
-    enigmaUI = new EnigmaUI(enigmaConfiguration, ENIGMA_WIDTH, ENIGMA_HEIGHT);
-    enigmaUI.draw(context);
+
+    const rotorBox = initializeCanvasContext('enigma-rotorbox', 1000, 470);
+    rotorBoxUI = new RotorBoxUI(1000, 470, enigmaConfiguration.rotorBox, rotorBox);
+    rotorBoxUI.draw();
 
     const plugboard = initializeCanvasContext('enigma-plugboard', 1000, 410);
     const plugboardUI = new PlugboardUI(1000, 410, enigmaConfiguration.plugboard, plugboard);
