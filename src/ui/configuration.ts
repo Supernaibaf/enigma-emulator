@@ -6,6 +6,8 @@ type RotorSelectElements = {
   position: HTMLSelectElement;
 };
 
+const CONFIGURATION_FORM_ID = 'enigma-configuration';
+
 const REFLECTOR_CLASS = 'reflector';
 const ROTOR_CLASS = 'rotors';
 
@@ -38,7 +40,14 @@ export class Configuration {
 
   private rotorSelectors: RotorSelectElements[];
 
-  constructor(private enigmaConfiguration: EnigmaConfiguration, private container: HTMLElement) {
+  private configurationForm: HTMLFormElement;
+
+  private submitListenerSubscription: (event: Event) => void;
+
+  constructor(
+    private enigmaConfiguration: EnigmaConfiguration,
+    private submitListener: (enigmaConfiguration: EnigmaConfiguration) => void
+  ) {
     this.rotorSelectors = [];
   }
 
@@ -81,16 +90,7 @@ export class Configuration {
     });
   }
 
-  initialize() {
-    const reflectorContainer = this.container.getElementsByClassName(
-      REFLECTOR_CLASS
-    )[0] as HTMLSelectElement;
-    const rotorsContainer = this.container.getElementsByClassName(ROTOR_CLASS)[0] as HTMLElement;
-    this.initializeReflectors(reflectorContainer);
-    this.initializeRotors(rotorsContainer);
-  }
-
-  submit() {
+  private submit() {
     const reflector = this.enigmaConfiguration.reflectors.find(
       r => r.type === this.reflectorSelector.value
     )!;
@@ -102,5 +102,30 @@ export class Configuration {
       type.setRingSetting(s.ringSetting.value);
       this.enigmaConfiguration.rotorBox.setRotor(i, type);
     });
+
+    this.submitListener(this.enigmaConfiguration);
+    this.destroy();
+  }
+
+  initialize() {
+    this.submitListenerSubscription = (e: Event) => {
+      this.submit();
+      e.preventDefault();
+    };
+    this.configurationForm = document.getElementById(CONFIGURATION_FORM_ID) as HTMLFormElement;
+    this.configurationForm.addEventListener('submit', this.submitListenerSubscription);
+
+    const reflectorContainer = this.configurationForm.getElementsByClassName(
+      REFLECTOR_CLASS
+    )[0] as HTMLSelectElement;
+    const rotorsContainer = this.configurationForm.getElementsByClassName(
+      ROTOR_CLASS
+    )[0] as HTMLElement;
+    this.initializeReflectors(reflectorContainer);
+    this.initializeRotors(rotorsContainer);
+  }
+
+  destroy() {
+    this.configurationForm.removeEventListener('submit', this.submitListenerSubscription);
   }
 }
